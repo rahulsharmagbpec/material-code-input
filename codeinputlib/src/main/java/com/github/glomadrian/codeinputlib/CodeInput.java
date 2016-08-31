@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -63,6 +64,8 @@ public class CodeInput extends View {
     private boolean underlined = true;
     private String hintText;
     private int mInputType;
+    private Typeface typeface;
+    private Typeface hintTypeface;
 
     private codeReadyListener listener;
 
@@ -137,6 +140,14 @@ public class CodeInput extends View {
         hintText = attributes.getString(R.styleable.core_area_hint_text);
         underlineAmount = attributes.getInt(R.styleable.core_area_codes, underlineAmount);
         textColor = attributes.getInt(R.styleable.core_area_text_color, textColor);
+        String fontPathForText = attributes.getString(R.styleable.core_area_text_typeface);
+        if(fontPathForText != null) {
+            typeface = getCustomTypeface(fontPathForText);
+        }
+        String fontPathForHint = attributes.getString(R.styleable.core_area_hint_typeface);
+        if(fontPathForHint != null){
+            hintTypeface = getCustomTypeface(fontPathForHint);
+        }
     }
 
     private void initDataStructures() {
@@ -159,11 +170,15 @@ public class CodeInput extends View {
         textPaint.setColor(textColor);
         textPaint.setAntiAlias(true);
         textPaint.setTextAlign(Paint.Align.CENTER);
+        if(typeface != null)
+            textPaint.setTypeface(typeface);
         hintPaint = new Paint();
         hintPaint = new Paint();
         hintPaint.setTextSize(hintNormalSize);
         hintPaint.setAntiAlias(true);
         hintPaint.setColor(underlineColor);
+        if(hintTypeface != null)
+            hintPaint.setTypeface(hintTypeface);
     }
 
     private void initAnimator() {
@@ -431,5 +446,8 @@ public class CodeInput extends View {
             float size = (float) animation.getAnimatedValue();
             hintPaint.setTextSize(size);
         }
+    }
+    private Typeface getCustomTypeface(String fontPath) {
+        return Typeface.createFromAsset(getContext().getAssets(), fontPath);
     }
 }

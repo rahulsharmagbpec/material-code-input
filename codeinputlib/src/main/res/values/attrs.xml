@@ -13,5 +13,9 @@
         format="string"/>
     <attr name="codes"
         format="integer"/>
+    <attr name="text_typeface"
+        format="string"/>
+    <attr name="hint_typeface"
+        format="string"/>
   </declare-styleable>
 </resources>
